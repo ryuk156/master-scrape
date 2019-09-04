@@ -10,11 +10,11 @@ node {
 		}
 
 		repoList.each {
-			dir('$it') {
+			dir(it) {
 				repoScrape.exec()
 			}
 		}
-		
+
 		dir('meta-data') {
 			repoScrape.push()
 		}
