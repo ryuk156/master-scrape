@@ -11,6 +11,7 @@ node {
 
 		repoList.each {
 			dir(it) {
+				git url: "https://github.com/Terasology/${it}"
 				repoScrape.exec()
 			}
 		}

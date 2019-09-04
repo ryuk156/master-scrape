@@ -9,7 +9,9 @@ def exec() {
 	if(moduleFile.exists()) {
 		moduleJson = new JsonSlurper().parseText(moduleFile.text)
 		moduleName = moduleJson.get("id")
-		moduleDir = indexDir + moduleName.toString()
+		moduleDir = new File(indexDir + moduleName.toString())
+		moduleDir.mkdir()
+
 		println "Scraping data from " + moduleName
 	
 		moduleSrc = moduleFile
