@@ -3,15 +3,16 @@ import static groovy.io.FileType.FILES
 
 def exec() {
 	moduleFile = new File("./module.txt")
-	indexDir = "." // Needs to be changed according to workspace setting
+	indexDir = "../meta-data" // Needs to be changed according to workspace setting
 	
 	if(moduleFile.exists()) {
 		moduleJson = new JsonSlurper().parseText(moduleFile.text)
 		moduleName = moduleJson.get("id")
+		moduleDir = indexDir + moduleName.toString()
 		println "Scraping data from " + moduleName
 	
 		moduleSrc = moduleFile
-		moduleDst = new File(indexDir.toString() + "/module.txt")
+		moduleDst = new File(moduleDir.toString() + "/module.txt")
 		moduleDst << moduleSrc.text
 		println "Fetched module data"
 	
@@ -23,7 +24,7 @@ def exec() {
 	    	if(file.name.endsWith('.md') || file.name.endsWith('.markdown') || file.name.endsWith('.MD') || file.name.endsWith('.MARKDOWN')) {
 	    		println "README Found."
 				readmeSrc = new File("./" + file.toString())
-				readmeDst = new File(indexDir.toString() + "/README.md")
+				readmeDst = new File(moduleDir.toString() + "/README.md")
 				readmeDst << readmeSrc.text		
 				println "Fetched README data."
 				readmeFound += 1
@@ -38,7 +39,7 @@ def exec() {
 		coverSrc = new File("./cover.png")
 	
 		if(logoSrc.exists()) {
-			logoDst = new File(indexDir.toString() + "/logo.png")
+			logoDst = new File(moduleDir.toString() + "/logo.png")
 			logoDst << logoSrc.bytes
 			println "Fetched logo image."
 		} else {
@@ -46,7 +47,7 @@ def exec() {
 		}
 	
 		if(coverSrc.exists()) {
-			coverDst = new File(indexDir.toString() + "/cover.png")
+			coverDst = new File(moduleDir.toString() + "/cover.png")
 			coverDst << coverSrc.bytes
 			println "Fetched cover image."
 		} else {
@@ -61,8 +62,10 @@ def exec() {
 
 def push() {
 	withCredentials([usernamePassword(credentialsId: 'GooeyHub', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-    	sh("git add .")
-    	sh("git commit -m \"Updated Index Data\"")
+    	sh('git config --global user.email "terasology@gmail.com"')
+    	sh('git config --global user.name "GooeyHub"')
+    	sh('git add .')
+    	sh('git commit -m \"Updated Index Data\"')
     	sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/GooeyTests/TempIndex.git --all')
 	}
 }

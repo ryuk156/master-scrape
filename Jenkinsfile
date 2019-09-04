@@ -4,11 +4,18 @@ node {
 		def repoSrc = load 'LoadRepo.groovy'
 		def repoScrape = load 'Scrape.groovy'
 		def repoList = repoSrc.fetch()
+
 		dir('meta-data') {
 			git url: 'https://github.com/GooeyTests/TempIndex'
-			repoList.each {
-					repoScrape.exec()
-				}
+		}
+
+		repoList.each {
+			dir('$it') {
+				repoScrape.exec()
+			}
+		}
+		
+		dir('meta-data') {
 			repoScrape.push()
 		}
 	}
