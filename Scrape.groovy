@@ -3,7 +3,7 @@ import static groovy.io.FileType.FILES
 
 def exec() {
 	sh('ls -l')
-	moduleFile = new File("module.txt")
+	File moduleFile = new File("module.txt")
 	indexDir = "../meta-data/" // Needs to be changed according to workspace setting
 	
 	if(moduleFile.exists()) {
