@@ -4,6 +4,8 @@ package org.kohsuke.github
 import org.kohsuke.github.GitHub
 
 def fetch() {
+	sh('pwd')
+	sh('ls -l')
 	def repos = []
 	def org = 'Terasology';
 	def githubCom = GitHub.connectUsingOAuth('ddae1e41099bb89a636241818107dff969c27695');

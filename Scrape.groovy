@@ -4,6 +4,8 @@ import static groovy.io.FileType.FILES
 def exec() {
 	sh('ls -l')
 	File moduleFile = new File("module.txt")
+	println "Absolute Path " + moduleFile.getAbsolutePath()
+
 	indexDir = "../meta-data/" // Needs to be changed according to workspace setting
 	
 	if(moduleFile.exists()) {
