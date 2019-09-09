@@ -2,23 +2,22 @@ import groovy.json.JsonSlurper
 import static groovy.io.FileType.FILES
 
 def exec() {
-	sh('ls -l')
-	File moduleFile = new File("module.txt")
-	println "Absolute Path " + moduleFile.getAbsolutePath()
-
-	indexDir = "../meta-data/" // Needs to be changed according to workspace setting
+	def moduleFile = "./module.txt"
+	def indexDir = "../meta-data/" // Needs to be changed according to workspace setting
 	
-	if(moduleFile.exists()) {
-		moduleJson = new JsonSlurper().parseText(moduleFile.text)
+	if(fileExists(moduleFile)) {
+		moduleMeta = readFile(moduleFile)
+		moduleJson = new JsonSlurper().parseText(moduleMeta)
 		moduleName = moduleJson.get("id")
 		moduleDir = new File(indexDir + moduleName.toString())
 		moduleDir.mkdir()
 
 		println "Scraping data from " + moduleName
 	
-		moduleSrc = moduleFile
-		moduleDst = new File(moduleDir.toString() + "/module.txt")
-		moduleDst << moduleSrc.text
+		moduleSrc = moduleMeta
+		moduleDst = writeFile(moduleDir.toString() + "/module.txt")
+
+		//moduleDst << moduleSrc.text
 		println "Fetched module data"
 	
 		dir = new File('./')
