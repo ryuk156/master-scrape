@@ -1,19 +1,22 @@
 #!/usr/bin/env groovy
-package org.kohsuke.github
-@Grab(group='org.kohsuke', module='github-api', version='1.75')
-import org.kohsuke.github.GitHub
+
+
 
 def fetch() {
-	def repos = []
-	def org = 'Terasology';
-	def githubCom = GitHub.connectUsingOAuth('ddae1e41099bb89a636241818107dff969c27695');
+	
+	def response = sh(script: 'curl -s https://api.github.com/orgs/terasology/repos', returnStdout: true).trim()
+	def json = new groovy.json.JsonSlurperClassic().parseText(response)
+        def repos=[]
 
-	githubCom.getOrganization(org).listRepositories().each {
-		repos << it.getName()
+   json.each {
+       repos << it.name
 	}
+	
 	return repos
+
+
+		
 }
 
 return this
-
     
