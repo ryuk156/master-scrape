@@ -4,8 +4,8 @@ pipeline{
     agent any
     stages{
         stage('Gather Data') {
-	   
-		script{
+		steps{
+			script{
 		  def repoSrc = load 'LoadRepo.groovy'
 		def repoScrape = load 'Scrape.groovy'
 		def repoList = repoSrc.fetch()
@@ -25,6 +25,8 @@ pipeline{
 			repoScrape.push()
 		}
 		}
+		}
+		
 		
 	}
     }
