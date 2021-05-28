@@ -5,7 +5,7 @@ pipeline{
     stages{
         stage('Gather Data') {
 		steps{
-			cleanWs()
+			
 			script{
 		  def repoSrc = load 'LoadRepo.groovy'
 		def repoScrape = load 'Scrape.groovy'
