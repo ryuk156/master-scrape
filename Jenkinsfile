@@ -1,7 +1,12 @@
-node {
-	stage('Gather Data') {
-	    checkout scm
-		def repoSrc = load 'LoadRepo.groovy'
+
+
+pipeline{
+    agent any
+    stages{
+        stage('Gather Data') {
+	   
+		script{
+		  def repoSrc = load 'LoadRepo.groovy'
 		def repoScrape = load 'Scrape.groovy'
 		def repoList = repoSrc.fetch()
 
@@ -19,5 +24,11 @@ node {
 		dir('meta-data') {
 			repoScrape.push()
 		}
+		}
+		
 	}
+    }
 }
+
+
+
